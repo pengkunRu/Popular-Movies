@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import utilities.NetworkUtils;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mDisplayQueryResult;
+    // Create a variable store a reference to the error message text view
+    private TextView mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDisplayQueryResult = (TextView)findViewById(R.id.tv_display_query_result);
+        mErrorMessage = (TextView)findViewById(R.id.tv_display_error_message);
     }
 
     // Inflater our menu resource
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         if(menuItemThatWasSelected==R.id.action_refresh){
+            showJsonDataView();
             makeTheMovieDbSearchQuery();
         }
         if(menuItemThatWasSelected==R.id.action_setting){
@@ -53,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Hide the error message and show the json data
+     */
+    private void showJsonDataView(){
+        mErrorMessage.setVisibility(View.INVISIBLE);
+        mDisplayQueryResult.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Hide the JSON data and show the error message
+     */
+    private void showErrorMessageView(){
+        mErrorMessage.setVisibility(View.VISIBLE);
+        mDisplayQueryResult.setVisibility(View.INVISIBLE);
+    }
+
+    //Set up the background thread
     private void makeTheMovieDbSearchQuery(){
         URL theMovieDbSearchUrl = NetworkUtils.buildUrl("popularity");
         new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
@@ -104,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }else {
+                showErrorMessageView();
             }
         }
     }

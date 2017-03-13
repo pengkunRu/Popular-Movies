@@ -3,4 +3,7 @@
 
     <string name="action_setting">Setting</string>
     <string name="action_refresh">Refresh</string>
+
+    <!-- Add a string stating that an error has occurred-->
+    <string name="error_message">Failed to get result,Please try again.</string>
 </resources>
