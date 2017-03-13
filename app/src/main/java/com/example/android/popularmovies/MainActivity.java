@@ -10,6 +10,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -73,9 +77,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         @Override
-        protected void onPostExecute(String s) {
-            if(s!=null&&!s.equals("")){
-                mDisplayQueryResult.setText(s);
+        protected void onPostExecute(String jsonResponse) {
+            if(jsonResponse!=null&&!jsonResponse.equals("")){
+                // Parse the response given by the jsonResponse
+                try {
+                    // Create the json root object by constructor and passing in
+                    // the jsonResponse String,this class will parse the whole JSON String
+                    // we got back from the movie db api
+                    JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+                    // Get the values associated with the "results" key
+                    JSONArray resultsArray = baseJsonResponse.getJSONArray("results");
+                    // Loop through each result in the result array
+                    for (int i = 0; i < resultsArray.length(); i++){
+                        JSONObject currentMovie = resultsArray.getJSONObject(i);
+
+                        String posterPath = currentMovie.getString("poster_path");
+                        String overView = currentMovie.getString("overview");
+                        String releaseDate = currentMovie.getString("release_date");
+                        String title = currentMovie.getString("title");
+                        String popularity = currentMovie.getString("popularity");
+                        String voteAverage = currentMovie.getString("vote_average");
+
+                        mDisplayQueryResult.append(posterPath+" - "+overView+" - "+releaseDate+" - "+
+                                            title+" - "+popularity+" - "+voteAverage+" - "+"\n\n\n");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
