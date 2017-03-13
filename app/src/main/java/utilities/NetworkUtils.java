@@ -47,6 +47,10 @@ public class NetworkUtils {
      */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /*milliseconds*/);
+        urlConnection.setConnectTimeout(15000 /*milliseconds*/);
+        urlConnection.connect();
         try {
             InputStream in = urlConnection.getInputStream();
 
