@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mDisplayQueryResult;
     // Create a variable store a reference to the error message text view
     private TextView mErrorMessage;
+    // Create a variable store a reference to the prograss bar loading indicator
+    private ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDisplayQueryResult = (TextView)findViewById(R.id.tv_display_query_result);
         mErrorMessage = (TextView)findViewById(R.id.tv_display_error_message);
+        mLoadingIndicator = (ProgressBar)findViewById(R.id.pb_loading_indicator);
     }
 
     // Inflater our menu resource
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         if(menuItemThatWasSelected==R.id.action_refresh){
+            mDisplayQueryResult.setText("");
+            mLoadingIndicator.setVisibility(View.VISIBLE);
             showJsonDataView();
             makeTheMovieDbSearchQuery();
         }
@@ -100,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String jsonResponse) {
+            //set the progress loading indicator invisibility before show the json data or error message
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+
             if(jsonResponse!=null&&!jsonResponse.equals("")){
                 // Parse the response given by the jsonResponse
                 try {
