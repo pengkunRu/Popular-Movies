@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,20 +25,42 @@ import utilities.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mDisplayQueryResult;
+    // Create a variable store a reference to our MovieAdapter
+    private MovieAdapter mAdapter;
+    // Create a variable store a reference to the RecyclerView
+    private RecyclerView mRecyclerView;
     // Create a variable store a reference to the error message text view
     private TextView mErrorMessage;
     // Create a variable store a reference to the prograss bar loading indicator
     private ProgressBar mLoadingIndicator;
+
+    private String[] parsedMovieData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDisplayQueryResult = (TextView)findViewById(R.id.tv_display_query_result);
         mErrorMessage = (TextView)findViewById(R.id.tv_display_error_message);
         mLoadingIndicator = (ProgressBar)findViewById(R.id.pb_loading_indicator);
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.rv_movies);
+
+        /**
+         * Creates a vertical GridLayoutManager
+         *
+         * Context:will be used to access resources.
+         *     int:The number of columns in the grid
+         */
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this,2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+
+        /**
+         *  Assign setHasFixedSize to true allows RecyclerView to do some optimizations
+         *  on our UI,namely,allowing it avoid invalidating the whole layout when the adapter
+         *  contents change.
+         */
+//        mRecyclerView.setHasFixedSize(true);
     }
 
     // Inflater our menu resource
@@ -51,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         if(menuItemThatWasSelected==R.id.action_refresh){
-            mDisplayQueryResult.setText("");
+            mRecyclerView.setAdapter(null);
             mLoadingIndicator.setVisibility(View.VISIBLE);
             showJsonDataView();
             makeTheMovieDbSearchQuery();
@@ -69,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showJsonDataView(){
         mErrorMessage.setVisibility(View.INVISIBLE);
-        mDisplayQueryResult.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -77,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showErrorMessageView(){
         mErrorMessage.setVisibility(View.VISIBLE);
-        mDisplayQueryResult.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     //Set up the background thread
@@ -118,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject baseJsonResponse = new JSONObject(jsonResponse);
                     // Get the values associated with the "results" key
                     JSONArray resultsArray = baseJsonResponse.getJSONArray("results");
+                    parsedMovieData = new String[resultsArray.length()];
+
                     // Loop through each result in the result array
                     for (int i = 0; i < resultsArray.length(); i++){
                         JSONObject currentMovie = resultsArray.getJSONObject(i);
@@ -129,9 +155,11 @@ public class MainActivity extends AppCompatActivity {
                         String popularity = currentMovie.getString("popularity");
                         String voteAverage = currentMovie.getString("vote_average");
 
-                        mDisplayQueryResult.append(posterPath+" - "+overView+" - "+releaseDate+" - "+
-                                            title+" - "+popularity+" - "+voteAverage+" - "+"\n\n\n");
+                        parsedMovieData[i] = posterPath + " - " + overView + " - " + releaseDate + " - " +
+                                            title + " - " + popularity + " - " + voteAverage + " - ";
                     }
+                    mAdapter = new MovieAdapter(parsedMovieData);
+                    mRecyclerView.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
