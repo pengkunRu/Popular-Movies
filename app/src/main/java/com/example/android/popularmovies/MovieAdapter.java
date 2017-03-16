@@ -17,11 +17,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     // Specify how many views the adapter will holder
     private String[] parsedMovieData = null;
+    /**
+     * Create a member variable to store a reference to a list item click listener
+     * This allows us to use MovieAdapter as component woth an external click handler,
+     * (such as from our Activity)
+     */
+    private final ListItemClickListener mOnClickListener;
+
+    /**
+     * Create an interface that will define your listener
+     */
+    public interface ListItemClickListener{
+        void onListItemClicked(int ClickedItemIndex);
+    }
 
     /**
      * Create the constructor for MovieAdapter that accepts the number of items to display
      */
-    public MovieAdapter(String[] movieDataSource){
+    public MovieAdapter(ListItemClickListener listener,String[] movieDataSource){
+        mOnClickListener = listener;
         parsedMovieData = movieDataSource;
     }
 
@@ -61,10 +75,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     /**
      * Create our ViewHolder class as an inner class of MovieAdapter
      */
-    class MovieViewHolder extends RecyclerView.ViewHolder{
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         // Since we only had one textView in our layout {@movie_list_item.xml},we'll create a
-        // single textView member varibale
+        // single textView member variable
         ImageView mListItemMovieView;
 
         public MovieViewHolder(View itemView) {
@@ -73,11 +87,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             // One of the most things a view holder does is cache these references to the views
             // that will be modified in the adapter
             mListItemMovieView = (ImageView)itemView.findViewById(R.id.iv_poster_of_movie);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(String imageUri){
             Context context = mListItemMovieView.getContext();
             Picasso.with(context).load(imageUri).into(mListItemMovieView);
+        }
+
+        /**
+         * Now the MovieAdapter has access to a listener,we need to pass it to the view holder
+         * so that view can invoke it.
+         */
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClicked(clickedPosition);
         }
     }
 }

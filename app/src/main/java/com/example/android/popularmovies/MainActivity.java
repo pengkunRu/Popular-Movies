@@ -23,7 +23,9 @@ import java.net.URL;
 
 import utilities.NetworkUtils;
 
-public class MainActivity extends AppCompatActivity {
+import static android.widget.Toast.makeText;
+
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{
 
     // Create a variable store a reference to our MovieAdapter
     private MovieAdapter mAdapter;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mErrorMessage;
     // Create a variable store a reference to the prograss bar loading indicator
     private ProgressBar mLoadingIndicator;
+    private Toast mToast;
 
     private String[] parsedMovieData = null;
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         if(menuItemThatWasSelected==R.id.action_setting){
             Context context = MainActivity.this;
             String message = "Setting clicked";
-            Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+            makeText(context,message,Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,6 +111,18 @@ public class MainActivity extends AppCompatActivity {
     private void makeTheMovieDbSearchQuery(){
         URL theMovieDbSearchUrl = NetworkUtils.buildUrl("popularity");
         new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
+    }
+
+    @Override
+    public void onListItemClicked(int ClickedItemIndex) {
+        if(mToast!=null){
+            mToast.cancel();
+        }
+
+        Context context = MainActivity.this;
+        String text = ClickedItemIndex+"# Clicked";
+        mToast = Toast.makeText(context,text,Toast.LENGTH_SHORT);
+        mToast.show();
     }
 
     //Fetch the popular movie data from internet on the background thread
@@ -160,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 //                                            title + " - " + popularity + " - " + voteAverage + " - ";
                         parsedMovieData[i] = imageUri;
                     }
-                    mAdapter = new MovieAdapter(parsedMovieData);
+                    mAdapter = new MovieAdapter(MainActivity.this,parsedMovieData);
                     mRecyclerView.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
