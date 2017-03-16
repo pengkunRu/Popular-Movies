@@ -149,14 +149,16 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject currentMovie = resultsArray.getJSONObject(i);
 
                         String posterPath = currentMovie.getString("poster_path");
+                        String imageUri = "https://image.tmdb.org/t/p/w500"+posterPath;
                         String overView = currentMovie.getString("overview");
                         String releaseDate = currentMovie.getString("release_date");
                         String title = currentMovie.getString("title");
                         String popularity = currentMovie.getString("popularity");
                         String voteAverage = currentMovie.getString("vote_average");
 
-                        parsedMovieData[i] = posterPath + " - " + overView + " - " + releaseDate + " - " +
-                                            title + " - " + popularity + " - " + voteAverage + " - ";
+//                        parsedMovieData[i] = imageUri + " - " + overView + " - " + releaseDate + " - " +
+//                                            title + " - " + popularity + " - " + voteAverage + " - ";
+                        parsedMovieData[i] = imageUri;
                     }
                     mAdapter = new MovieAdapter(parsedMovieData);
                     mRecyclerView.setAdapter(mAdapter);

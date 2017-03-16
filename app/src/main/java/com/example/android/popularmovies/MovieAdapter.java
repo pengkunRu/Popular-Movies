@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by kun on 2017/3/16.
@@ -45,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.mListItemMovieView.setText(parsedMovieData[position]);
+        holder.bind(parsedMovieData[position]);
     }
 
     @Override
@@ -64,14 +66,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         // Since we only had one textView in our layout {@movie_list_item.xml},we'll create a
         // single textView member varibale
-        TextView mListItemMovieView;
+        ImageView mListItemMovieView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
 
             // One of the most things a view holder does is cache these references to the views
             // that will be modified in the adapter
-            mListItemMovieView = (TextView)itemView.findViewById(R.id.tv_item_movie);
+            mListItemMovieView = (ImageView)itemView.findViewById(R.id.iv_poster_of_movie);
+        }
+
+        public void bind(String imageUri){
+            Context context = mListItemMovieView.getContext();
+            Picasso.with(context).load(imageUri).into(mListItemMovieView);
         }
     }
 }
