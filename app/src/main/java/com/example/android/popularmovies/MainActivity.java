@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     //Set up the background thread
     private void makeTheMovieDbSearchQuery() {
-        URL theMovieDbSearchUrl = NetworkUtils.buildUrl("popularity");
+        URL theMovieDbSearchUrl = NetworkUtils.buildUrl();
         new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
     }
 

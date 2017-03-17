@@ -29,10 +29,8 @@ public class NetworkUtils {
     /**
      * Build a url that contains all information about the movie
      */
-    public static URL buildUrl(String sortBy) {
-        Uri builtUri = Uri.parse(THEMOVIEDB_BASIC_URI).buildUpon()
-                .appendQueryParameter(PARAM_SORT, sortBy)
-                .build();
+    public static URL buildUrl() {
+        Uri builtUri = Uri.parse(THEMOVIEDB_BASIC_URI).buildUpon().build();
 
         URL url = null;
         try {

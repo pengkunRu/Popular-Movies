@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by kun on 2017/3/17.
  */
 
-public class MovieInformation implements Parcelable{
+public class MovieInformation implements Parcelable {
 
     private static final String TAG_LOG = MovieInformation.class.getName();
 
