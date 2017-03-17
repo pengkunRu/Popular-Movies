@@ -24,9 +24,9 @@ public class NetworkUtils {
 
     final static String PARAM_SORT = "sort";
 
-    public static URL buildUrl(String sortBy){
+    public static URL buildUrl(String sortBy) {
         Uri builtUri = Uri.parse(THE_MOVIE_DB_BASIC_URI).buildUpon()
-                .appendQueryParameter(PARAM_SORT,sortBy)
+                .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
 
         URL url = null;
