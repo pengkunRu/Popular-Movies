@@ -70,8 +70,7 @@ public class OpenMovieJsonUtils {
         for (int i = 0; i < resultsArray.length(); i++) {
             JSONObject currentMovie = resultsArray.getJSONObject(i);
 
-            String posterPath = currentMovie.getString(TMD_POSTER_PATH);
-            URL imageUri = NetworkUtils.imageUrl(posterPath);
+            String imageUri = NetworkUtils.imageUrl(currentMovie.getString(TMD_POSTER_PATH));
             String overView = currentMovie.getString(TMD_OVERVIEW);
             String releaseDate = currentMovie.getString(TMD_RELEASE_DATE);
             String title = currentMovie.getString(TMD_TITLE);

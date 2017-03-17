@@ -50,17 +50,11 @@ public class NetworkUtils {
      *
      * @param posterPath contains the last piece of data
      */
-    public static URL imageUrl(String posterPath){
-        String builtUrl = IMAGE_BASIC_URI + "/" +
+    public static String imageUrl(String posterPath){
+        String builtImageUrl = IMAGE_BASIC_URI + "/" +
                           PARAM_FILE_SIZE +
                           posterPath;
-        URL url = null;
-        try {
-            url = new URL(builtUrl);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return url;
+        return builtImageUrl;
     }
 
     /**

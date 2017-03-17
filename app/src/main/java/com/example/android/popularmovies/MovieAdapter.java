@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -87,6 +86,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
+    /**
+     * Get all data about one movie
+     *
+     * @param position the index of current position
+     * @return a MovieInformation object
+     */
+    public MovieInformation getCurrentMovieData(int position){
+        return parsedMovieData.get(position);
+    }
 
     /**
      * Create our ViewHolder class as an inner class of MovieAdapter
@@ -106,9 +114,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-        public void bind(URL imageUri){
+        public void bind(String imageUri){
             Context context = mListItemMovieView.getContext();
-            Picasso.with(context).load(imageUri.toString()).into(mListItemMovieView);
+            Picasso.with(context).load(imageUri).into(mListItemMovieView);
         }
 
         /**
