@@ -9,6 +9,9 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Created by kun on 2017/3/16.
  */
@@ -18,7 +21,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private static final String TAG_LOG = MovieAdapter.class.getName();
 
     // Specify how many views the adapter will holder
-    private String[] parsedMovieData = null;
+    private ArrayList<MovieInformation> parsedMovieData = null;
     /**
      * Create a member variable to store a reference to a list item click listener
      * This allows us to use MovieAdapter as component woth an external click handler,
@@ -61,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.bind(parsedMovieData[position]);
+        holder.bind(parsedMovieData.get(position).getmPosterPath());
     }
 
     @Override
@@ -69,7 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if(parsedMovieData == null){
             return 0;
         }
-        return parsedMovieData.length;
+        return parsedMovieData.size();
     }
 
     /**
@@ -79,7 +82,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      *
      * @param movieData The new movie data to be displayed.
      */
-    public void setMovieData(String[] movieData) {
+    public void setMovieData(ArrayList<MovieInformation> movieData) {
         parsedMovieData = movieData;
         notifyDataSetChanged();
     }
@@ -103,9 +106,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-        public void bind(String imageUri){
+        public void bind(URL imageUri){
             Context context = mListItemMovieView.getContext();
-            Picasso.with(context).load(imageUri).into(mListItemMovieView);
+            Picasso.with(context).load(imageUri.toString()).into(mListItemMovieView);
         }
 
         /**

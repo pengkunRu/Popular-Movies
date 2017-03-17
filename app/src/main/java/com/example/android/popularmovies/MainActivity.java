@@ -19,6 +19,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import utilities.NetworkUtils;
 import utilities.OpenMovieJsonUtils;
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private TextView mErrorMessage;
     // Create a variable store a reference to the prograss bar loading indicator
     private ProgressBar mLoadingIndicator;
-
-    private String[] parsedMovieData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,14 +127,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     //Fetch the popular movie data from internet on the background thread
-    public class TheMovieDbQueryTask extends AsyncTask<URL, Void, String[]> {
+    public class TheMovieDbQueryTask extends AsyncTask<URL, Void, ArrayList<MovieInformation>> {
 
         @Override
-        protected String[] doInBackground(URL... urls) {
+        protected ArrayList<MovieInformation> doInBackground(URL... urls) {
             URL searchUrl = urls[0];
 
             String themoviedbSearchResults = null;
-            String[] simpleMovieStrings = null;
+            ArrayList<MovieInformation> simpleMovieStrings = null;
 
             try {
                 themoviedbSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
@@ -156,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
 
         @Override
-        protected void onPostExecute(String[] simpleMovieStrings) {
+        protected void onPostExecute(ArrayList<MovieInformation> simpleMovieStrings) {
             super.onPostExecute(simpleMovieStrings);
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if(simpleMovieStrings!=null&&simpleMovieStrings.length!=0){
+            if(simpleMovieStrings!=null&&simpleMovieStrings.size()!=0){
                 mAdapter.setMovieData(simpleMovieStrings);
             }else {
                 showErrorMessageView();

@@ -4,12 +4,15 @@ package utilities;
  * Created by kun on 2017/3/16.
  */
 
+import com.example.android.popularmovies.MovieInformation;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Utility functions to handle TheMovieDB JSON data
@@ -24,7 +27,7 @@ public class OpenMovieJsonUtils {
      * @return Array of Strings describing movie data
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static String[] getSimpleMovieStringsFromJson(String moviesJsonStr)
+    public static ArrayList<MovieInformation> getSimpleMovieStringsFromJson(String moviesJsonStr)
             throws JSONException {
 
         final String TMD_LIST = "results";
@@ -39,7 +42,7 @@ public class OpenMovieJsonUtils {
         final String TMD_MESSAGE_CODE = "cod";
 
         /* String array to hold each movie's information String */
-        String[] parsedMovieData = null;
+        ArrayList<MovieInformation> parsedMovieData = new ArrayList<MovieInformation>();
 
         // Create the json root object by constructor and passing in
         // the jsonResponse String,this class will parse the whole JSON String
@@ -64,8 +67,6 @@ public class OpenMovieJsonUtils {
         // Get the values associated with the "results" key
         JSONArray resultsArray = baseJsonResponse.getJSONArray(TMD_LIST);
 
-        parsedMovieData = new String[resultsArray.length()];
-
         for (int i = 0; i < resultsArray.length(); i++) {
             JSONObject currentMovie = resultsArray.getJSONObject(i);
 
@@ -77,7 +78,8 @@ public class OpenMovieJsonUtils {
             String popularity = currentMovie.getString(TMD_POPULARITY);
             String voteAverage = currentMovie.getString(TMD_VOTE_AVERAGE);
 
-            parsedMovieData[i] = imageUri.toString();
+            parsedMovieData.add(new MovieInformation(imageUri,voteAverage,releaseDate,
+                                popularity,overView,title));
         }
 
         return parsedMovieData;
