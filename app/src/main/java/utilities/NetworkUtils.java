@@ -20,18 +20,43 @@ public class NetworkUtils {
 
     private static final String TAG_LOG = NetworkUtils.class.getName();
 
-    private static final String THE_MOVIE_DB_BASIC_URI = "https://api.themoviedb.org/3/movie/popular?api_key=7cd08965da83865e7aca5470202011e9";
+    private static final String THEMOVIEDB_BASIC_URI = "https://api.themoviedb.org/3/movie/popular?api_key=7cd08965da83865e7aca5470202011e9";
+    private static final String IMAGE_BASIC_URI = "https://image.tmdb.org/t/p";
 
     final static String PARAM_SORT = "sort";
+    final static String PARAM_FILE_SIZE = "w500";
 
+    /**
+     * Build a url that contains all information about the movie
+     */
     public static URL buildUrl(String sortBy) {
-        Uri builtUri = Uri.parse(THE_MOVIE_DB_BASIC_URI).buildUpon()
+        Uri builtUri = Uri.parse(THEMOVIEDB_BASIC_URI).buildUpon()
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
 
         URL url = null;
         try {
             url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+    /**
+     * Build the image url In order to generate a fully working image URL,
+     * you'll need 3 pieces of data. Those pieces are a base_url,
+     * a file_size and a file_path.
+     *
+     * @param posterPath contains the last piece of data
+     */
+    public static URL imageUrl(String posterPath){
+        String builtUrl = IMAGE_BASIC_URI + "/" +
+                          PARAM_FILE_SIZE +
+                          posterPath;
+        URL url = null;
+        try {
+            url = new URL(builtUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

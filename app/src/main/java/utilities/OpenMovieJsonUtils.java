@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Utility functions to handle TheMovieDB JSON data
@@ -69,14 +70,14 @@ public class OpenMovieJsonUtils {
             JSONObject currentMovie = resultsArray.getJSONObject(i);
 
             String posterPath = currentMovie.getString(TMD_POSTER_PATH);
-            String imageUri = "https://image.tmdb.org/t/p/w500"+posterPath;
+            URL imageUri = NetworkUtils.imageUrl(posterPath);
             String overView = currentMovie.getString(TMD_OVERVIEW);
             String releaseDate = currentMovie.getString(TMD_RELEASE_DATE);
             String title = currentMovie.getString(TMD_TITLE);
             String popularity = currentMovie.getString(TMD_POPULARITY);
             String voteAverage = currentMovie.getString(TMD_VOTE_AVERAGE);
 
-            parsedMovieData[i] = imageUri;
+            parsedMovieData[i] = imageUri.toString();
         }
 
         return parsedMovieData;
