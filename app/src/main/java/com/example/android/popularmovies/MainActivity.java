@@ -120,8 +120,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     @Override
     public void onListItemClicked(int ClickedItemIndex) {
+        //Get data about the movie
+        MovieInformation currentMovieInfo = mAdapter.getCurrentMovieData(ClickedItemIndex);
         // Set up the link from MainActivity to newly created Activity
         Intent startTheDetailActivity = new Intent(MainActivity.this,DetailActivity.class);
+        startTheDetailActivity.putExtra(Intent.EXTRA_TEXT,currentMovieInfo);
         // Move to the DetailActivity
         startActivity(startTheDetailActivity);
     }
