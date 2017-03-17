@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
+    private static final String TAG_LOG = MovieAdapter.class.getName();
+
     // Specify how many views the adapter will holder
     private String[] parsedMovieData = null;
     /**
@@ -34,9 +36,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     /**
      * Create the constructor for MovieAdapter that accepts the number of items to display
      */
-    public MovieAdapter(ListItemClickListener listener,String[] movieDataSource){
+    public MovieAdapter(ListItemClickListener listener){
         mOnClickListener = listener;
-        parsedMovieData = movieDataSource;
     }
 
     /**
@@ -69,6 +70,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             return 0;
         }
         return parsedMovieData.length;
+    }
+
+    /**
+     * This method is used to set the movie data source on a MovieAdapter if we've already
+     * created one. This is handy when we get new data from the web but don't want to create a
+     * new MovieAdapter to display it.
+     *
+     * @param movieData The new movie data to be displayed.
+     */
+    public void setMovieData(String[] movieData) {
+        parsedMovieData = movieData;
+        notifyDataSetChanged();
     }
 
 

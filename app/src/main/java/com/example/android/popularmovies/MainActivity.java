@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,8 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
 
+    private static final String TAG_LOG = MainActivity.class.getName();
+
     // Create a variable store a reference to our MovieAdapter
     private MovieAdapter mAdapter;
     // Create a variable store a reference to the RecyclerView
@@ -34,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private TextView mErrorMessage;
     // Create a variable store a reference to the prograss bar loading indicator
     private ProgressBar mLoadingIndicator;
-    private Toast mToast;
 
     private String[] parsedMovieData = null;
 
@@ -62,7 +64,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          *  on our UI,namely,allowing it avoid invalidating the whole layout when the adapter
          *  contents change.
          */
-//        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
+        /**
+         * Create create a MovieAdapter to display movie information.
+         */
+        mAdapter = new MovieAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     // Inflater our menu resource
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         if (menuItemThatWasSelected == R.id.action_refresh) {
-            mRecyclerView.setAdapter(null);
+            mAdapter.setMovieData(null);
             mLoadingIndicator.setVisibility(View.VISIBLE);
             showJsonDataView();
             makeTheMovieDbSearchQuery();
@@ -114,49 +121,47 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     @Override
     public void onListItemClicked(int ClickedItemIndex) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-
-        Context context = MainActivity.this;
-        String text = ClickedItemIndex + "# Clicked";
-        mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        mToast.show();
+        // Set up the link from MainActivity to newly created Activity
+        Intent startTheDetailActivity = new Intent(MainActivity.this,DetailActivity.class);
+        // Move to the DetailActivity
+        startActivity(startTheDetailActivity);
     }
 
     //Fetch the popular movie data from internet on the background thread
-    public class TheMovieDbQueryTask extends AsyncTask<URL, Void, String> {
+    public class TheMovieDbQueryTask extends AsyncTask<URL, Void, String[]> {
 
         @Override
-        protected String doInBackground(URL... urls) {
+        protected String[] doInBackground(URL... urls) {
             URL searchUrl = urls[0];
+
             String themoviedbSearchResults = null;
+            String[] simpleMovieStrings = null;
 
             try {
                 themoviedbSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
-            return themoviedbSearchResults;
+
+            try {
+                simpleMovieStrings = OpenMovieJsonUtils.getSimpleMovieStringsFromJson(themoviedbSearchResults);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return simpleMovieStrings;
         }
 
-
         @Override
-        protected void onPostExecute(String jsonResponse) {
-            //set the progress loading indicator invisibility before show the json data or error message
+        protected void onPostExecute(String[] simpleMovieStrings) {
+            super.onPostExecute(simpleMovieStrings);
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-
-            if (jsonResponse != null && !jsonResponse.equals("")) {
-                // Parse the response given by the jsonResponse
-                try {
-                    parsedMovieData = OpenMovieJsonUtils.getSimpleMovieStringsFromJson(jsonResponse);
-                    mAdapter = new MovieAdapter(MainActivity.this,parsedMovieData);
-                    mRecyclerView.setAdapter(mAdapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }else{
+            if(simpleMovieStrings!=null&&simpleMovieStrings.length!=0){
+                mAdapter.setMovieData(simpleMovieStrings);
+            }else {
                 showErrorMessageView();
             }
         }
