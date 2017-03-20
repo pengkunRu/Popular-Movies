@@ -11,6 +11,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import utilities.MovieInformationSorter;
+
 /**
  * Created by kun on 2017/3/16.
  */

@@ -1,4 +1,6 @@
-package com.example.android.popularmovies;
+package utilities;
+
+import com.example.android.popularmovies.MovieInformation;
 
 import java.util.ArrayList;
 import java.util.Collections;
