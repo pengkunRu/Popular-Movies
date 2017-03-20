@@ -7,4 +7,14 @@
     <!-- Add a string stating that an error has occurred-->
     <string name="error_message">Failed to get result,Please try again.</string>
     <string name="title_activity_detail">DetailActivity</string>
+
+    <!-- Add a string stating that category information-->
+    <string name="categoty_popular">Popular</string>
+    <string name="categoty_latest">Latest</string>
+    <string name="categoty_now_playing">Now Playing</string>
+    <string name="categoty_top_rated">Top Rated</string>
+    <string name="categoty_upcoming">Upcoming</string>
+
+    <!-- Add a string stating that Spinner prompt-->
+    <string name="sorts_prompt">Popularity</string>
 </resources>
