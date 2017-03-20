@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private ArrayAdapter mSpinnerAdapter;
     // Create a variable store a reference to the spinner
     private Spinner mSpinner;
+    // Create a variable to avoid onItemSelected calls during initialization
+    private Boolean mIfCallOnItemSelected = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +59,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        mSpinner = (Spinner)findViewById(R.id.spinner_sortby);
-
-        /**
-         *  Bind the string array of items to the spinner item layout
-         */
-        mSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.sorts_array,R.layout.spinner_list_item);
-        mSpinner.setAdapter(mSpinnerAdapter);
-
 
         /**
          * Creates a vertical GridLayoutManager
@@ -83,6 +80,42 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          */
         mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+
+        mSpinner = (Spinner)findViewById(R.id.spinner_sortby);
+
+        /**
+         *  Bind the string array of items to the spinner item layout
+         */
+        mSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.sorts_array,R.layout.spinner_list_item);
+        mSpinner.setAdapter(mSpinnerAdapter);
+
+        /**
+         * If mIfCallOnItemSelected is false avoid onItemSelected
+         * calls during initialization
+         */
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                // Get the Item that was selected
+                if(mIfCallOnItemSelected) {
+                    String selectedItem = adapterView.getSelectedItem().toString();
+                    if (selectedItem.equals("Popularity")) {
+                        Log.i(TAG_LOG, "TEST: Popularity");
+                        mAdapter.getSortedMovieInformationByPopularity();
+                    }
+                    if (selectedItem.equals("Vote Average")) {
+                        Log.i(TAG_LOG, "TEST: Vote Average");
+                        mAdapter.getSortedMovieInformationByVote();
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        makeTheMovieDbSearchQuery();
     }
 
     // Inflater our menu resource
@@ -98,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         int menuItemThatWasSelected = item.getItemId();
         if (menuItemThatWasSelected == R.id.action_refresh) {
             mAdapter.setMovieData(null);
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-            showJsonDataView();
             makeTheMovieDbSearchQuery();
         }
         if (menuItemThatWasSelected == R.id.action_setting) {
@@ -134,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     //Set up the background thread
     private void makeTheMovieDbSearchQuery() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        showJsonDataView();
         URL theMovieDbSearchUrl = NetworkUtils.buildUrl();
         new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
     }
@@ -183,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(simpleMovieStrings!=null&&simpleMovieStrings.size()!=0){
                 mAdapter.setMovieData(simpleMovieStrings);
+                mIfCallOnItemSelected = true;
             }else {
                 showErrorMessageView();
             }
