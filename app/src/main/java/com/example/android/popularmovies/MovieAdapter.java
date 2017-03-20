@@ -28,6 +28,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      */
     private final ListItemClickListener mOnClickListener;
 
+    MovieInformationSorter movieInformationSorter;
+
     /**
      * Create an interface that will define your listener
      */
@@ -83,6 +85,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      */
     public void setMovieData(ArrayList<MovieInformation> movieData) {
         parsedMovieData = movieData;
+        movieInformationSorter = new MovieInformationSorter(parsedMovieData);
+        notifyDataSetChanged();
+    }
+
+    public void getSortedMovieInformationByVote(){
+        ArrayList<MovieInformation> sortedMovieInformation = movieInformationSorter.getSortedMoviesByVoteAverage();
+        parsedMovieData = sortedMovieInformation;
+        notifyDataSetChanged();
+    }
+
+    public void getSortedMovieInformationByPopularity(){
+        ArrayList<MovieInformation> sortedMovieInformation = movieInformationSorter.getSortedMoviesByPopularity();
+        parsedMovieData = sortedMovieInformation;
         notifyDataSetChanged();
     }
 

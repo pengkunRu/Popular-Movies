@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -74,8 +73,8 @@ public class OpenMovieJsonUtils {
             String overView = currentMovie.getString(TMD_OVERVIEW);
             String releaseDate = currentMovie.getString(TMD_RELEASE_DATE);
             String title = currentMovie.getString(TMD_TITLE);
-            String popularity = currentMovie.getString(TMD_POPULARITY);
-            String voteAverage = currentMovie.getString(TMD_VOTE_AVERAGE);
+            Double popularity = currentMovie.getDouble(TMD_POPULARITY);
+            Double voteAverage = currentMovie.getDouble(TMD_VOTE_AVERAGE);
 
             parsedMovieData.add(new MovieInformation(imageUri,voteAverage,releaseDate,
                                 popularity,overView,title));

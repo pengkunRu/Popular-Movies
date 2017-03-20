@@ -93,6 +93,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             String message = "Setting clicked";
             makeText(context, message, Toast.LENGTH_SHORT).show();
         }
+        if(menuItemThatWasSelected == R.id.action_sort_by_vote_average){
+            mAdapter.getSortedMovieInformationByVote();
+        }
+        if(menuItemThatWasSelected == R.id.action_sort_by_popularity){
+            mAdapter.getSortedMovieInformationByPopularity();
+        }
         return super.onOptionsItemSelected(item);
     }
 

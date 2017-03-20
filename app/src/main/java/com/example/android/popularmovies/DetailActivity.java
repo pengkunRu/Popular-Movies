@@ -76,13 +76,13 @@ public class DetailActivity extends AppCompatActivity {
             Picasso.with(context).load(imageUrl).into(mDisplayMovieImage);
 
             //Set movie vote average
-            mDisplayMovieVoteAverage.setText(mCurrentMovie.getmVoteAverage());
+            mDisplayMovieVoteAverage.setText(mCurrentMovie.getmVoteAverage().toString());
 
             //Set movie release data
             mDisplayMovieReleaseDate.setText(mCurrentMovie.getmReleaseDate());
 
             //Set movie popularity
-            mDisplayMoviePopularity.setText(mCurrentMovie.getmPopularity());
+            mDisplayMoviePopularity.setText(mCurrentMovie.getmPopularity().toString());
 
             //Set movie overview
             mDisplayMovieOverview.setText(mCurrentMovie.getmOverview());
