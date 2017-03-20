@@ -18,18 +18,19 @@
             android:padding="16dp">
 
             <TextView
-                android:layout_weight="1"
-                android:textSize="18sp"
                 android:id="@+id/tv_display_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/categoty_popular" />
+                android:layout_weight="1"
+                android:text="@string/categoty_popular"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
             <Spinner
-                android:layout_weight="1"
-                android:id="@+id/sp_sort_by"
+                android:id="@+id/spinner_sortby"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:entries="@array/sorts_array"
                 android:prompt="@string/sorts_prompt">
             </Spinner>

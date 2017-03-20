@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private TextView mErrorMessage;
     // Create a variable store a reference to the prograss bar loading indicator
     private ProgressBar mLoadingIndicator;
+    // Create a variable store a reference to the spinner items adapter
+    private ArrayAdapter mSpinnerAdapter;
+    // Create a variable store a reference to the spinner
+    private Spinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+        mSpinner = (Spinner)findViewById(R.id.spinner_sortby);
+
+        /**
+         *  Bind the string array of items to the spinner item layout
+         */
+        mSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.sorts_array,R.layout.spinner_list_item);
+        mSpinner.setAdapter(mSpinnerAdapter);
+
 
         /**
          * Creates a vertical GridLayoutManager
