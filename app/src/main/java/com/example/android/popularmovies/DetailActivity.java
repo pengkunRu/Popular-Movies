@@ -42,7 +42,9 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetailActivity.this,"Add your Action!",Toast.LENGTH_SHORT).show();
+                Context context = DetailActivity.this;
+                String text = "Collect The Movie";
+                Toast.makeText(context,text,Toast.LENGTH_SHORT).show();
             }
         });
 
