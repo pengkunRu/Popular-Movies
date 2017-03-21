@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -100,11 +99,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 if(mIfCallOnItemSelected) {
                     String selectedItem = adapterView.getSelectedItem().toString();
                     if (selectedItem.equals("Popularity")) {
-                        Log.i(TAG_LOG, "TEST: Popularity");
                         mAdapter.getSortedMovieInformationByPopularity();
                     }
                     if (selectedItem.equals("Vote Average")) {
-                        Log.i(TAG_LOG, "TEST: Vote Average");
                         mAdapter.getSortedMovieInformationByVote();
                     }
                 }
@@ -116,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         });
 
         makeTheMovieDbSearchQuery();
+        setTitle("The Movie DB");
     }
 
     // Inflater our menu resource

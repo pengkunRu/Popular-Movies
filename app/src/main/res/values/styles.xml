@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#9E9E9E</item>
-        <item name="colorPrimaryDark">#616161</item>
+        <item name="colorPrimary">#37474F</item>
+        <item name="colorPrimaryDark">#263238</item>
         <item name="colorAccent">#43A047</item>
     </style>
 
@@ -20,6 +20,7 @@
     <!-- Define Style for spinner items -->
     <style name="spinner_dropdown_style_theme1" parent="Widget.AppCompat.DropDownItem.Spinner">
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
 </resources>
