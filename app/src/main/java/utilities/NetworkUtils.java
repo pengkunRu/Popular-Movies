@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import static com.example.android.popularmovies.BuildConfig.MY_API_KEY;
+
 /**
  * these utilities will be used to communicate with THE MOVIE DB servers
  */
@@ -25,12 +27,15 @@ public class NetworkUtils {
 
     final static String PARAM_SORT = "sort";
     final static String PARAM_FILE_SIZE = "w500";
+    final static String PARAM_API_KEY = "api_key";
 
     /**
      * Build a url that contains all information about the movie
      */
     public static URL buildUrl() {
-        Uri builtUri = Uri.parse(THEMOVIEDB_BASIC_URI).buildUpon().build();
+        Uri builtUri = Uri.parse(THEMOVIEDB_BASIC_URI).buildUpon()
+                .appendQueryParameter(PARAM_API_KEY,MY_API_KEY)
+                .build();
 
         URL url = null;
         try {
