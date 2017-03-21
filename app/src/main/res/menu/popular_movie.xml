@@ -7,18 +7,9 @@
         android:title="@string/action_setting"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="2"
-        android:title="@string/action_refresh"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_sort_by_vote_average"
-        android:orderInCategory="3"
-        android:title="SortByVoteAverage"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_sort_by_popularity"
-        android:orderInCategory="4"
-        android:title="SortByPopulariy"
-        app:showAsAction="never"/>
+        android:orderInCategory="1"
+        android:title="@string/play_list"
+        android:icon="@drawable/ic_playlist_play_white_48dp"
+        android:id="@+id/play_list"
+        app:showAsAction="ifRoom"/>
 </menu>

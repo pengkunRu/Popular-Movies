@@ -127,20 +127,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
-        if (menuItemThatWasSelected == R.id.action_refresh) {
-            mAdapter.setMovieData(null);
-            makeTheMovieDbSearchQuery();
-        }
+        Context context = MainActivity.this;
         if (menuItemThatWasSelected == R.id.action_setting) {
-            Context context = MainActivity.this;
             String message = "Setting clicked";
             makeText(context, message, Toast.LENGTH_SHORT).show();
         }
-        if(menuItemThatWasSelected == R.id.action_sort_by_vote_average){
-            mAdapter.getSortedMovieInformationByVote();
-        }
-        if(menuItemThatWasSelected == R.id.action_sort_by_popularity){
-            mAdapter.getSortedMovieInformationByPopularity();
+        if (menuItemThatWasSelected == R.id.play_list){
+            String message = "Play List";
+            makeText(context, message, Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
