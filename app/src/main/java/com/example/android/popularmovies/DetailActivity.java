@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG_LOG = DetailActivity.class.getName();
@@ -83,8 +85,13 @@ public class DetailActivity extends AppCompatActivity {
             //Set movie release data
             mDisplayMovieReleaseDate.setText(mCurrentMovie.getmReleaseDate());
 
-            //Set movie popularity
-            mDisplayMoviePopularity.setText(mCurrentMovie.getmPopularity().toString());
+            /**
+             * Set movie popularity
+             * Just Keep two decimal places after decimal point
+             */
+            DecimalFormat df = new DecimalFormat("#.00");
+            String popularityDecimalFormat = df.format(mCurrentMovie.getmPopularity());
+            mDisplayMoviePopularity.setText(popularityDecimalFormat);
 
             //Set movie overview
             mDisplayMovieOverview.setText(mCurrentMovie.getmOverview());
