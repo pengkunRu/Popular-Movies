@@ -9,7 +9,6 @@
 
     <!-- Add a string stating that category information-->
     <string name="categoty_popular">Popular</string>
-    <string name="categoty_latest">Latest</string>
     <string name="categoty_now_playing">Now Playing</string>
     <string name="categoty_top_rated">Top Rated</string>
     <string name="categoty_upcoming">Upcoming</string>

@@ -1,6 +1,5 @@
 package com.example.android.popularmovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private Spinner mSpinner;
     // Create a variable to avoid onItemSelected calls during initialization
     private Boolean mIfCallOnItemSelected = false;
-
+    // Create a variable to show the category information
+    private TextView mDisplayCategoryInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+        mDisplayCategoryInformation = (TextView)findViewById(R.id.tv_display_category);
 
         /**
          * Creates a vertical GridLayoutManager
@@ -108,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
             }
         });
-
-        makeTheMovieDbSearchQuery();
+        fetchPopularMovies();
         setTitle("The Movie DB");
     }
 
@@ -124,8 +124,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
-        Context context = MainActivity.this;
-        // TODO: fetch different movies from internet
+        switch (menuItemThatWasSelected){
+            case R.id.action_popular:
+                fetchPopularMovies();
+                return true;
+            case R.id.action_now_playing:
+                fetchNowPlayingMovies();
+                return true;
+            case R.id.action_top_rated:
+                fetchTopRatedMovies();
+                return true;
+            case R.id.action_upcoming:
+                fetchUpcomingMovies();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -145,11 +157,47 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
 
-    //Set up the background thread
-    private void makeTheMovieDbSearchQuery() {
+    /**
+     * Fetch the popular movies data
+     */
+    private void fetchPopularMovies() {
         mLoadingIndicator.setVisibility(View.VISIBLE);
         showJsonDataView();
-        URL theMovieDbSearchUrl = NetworkUtils.buildUrl();
+        mDisplayCategoryInformation.setText("Popular");
+        URL theMovieDbSearchUrl = NetworkUtils.buildPopularUrl();
+        new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
+    }
+
+    /**
+     * Fetch the now playing movies data
+     */
+    private void fetchNowPlayingMovies() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        showJsonDataView();
+        mDisplayCategoryInformation.setText("Now Playing");
+        URL theMovieDbSearchUrl = NetworkUtils.buildNowPlayingUrl();
+        new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
+    }
+
+    /**
+     * Fetch the top rated movies data
+     */
+    private void fetchTopRatedMovies() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        showJsonDataView();
+        mDisplayCategoryInformation.setText("Top Rated");
+        URL theMovieDbSearchUrl = NetworkUtils.buildTopRatedUrl();
+        new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
+    }
+
+    /**
+     * Fetch the upcoming movies data
+     */
+    private void fetchUpcomingMovies() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        showJsonDataView();
+        mDisplayCategoryInformation.setText("Upcoming");
+        URL theMovieDbSearchUrl = NetworkUtils.buildUpComingUrl();
         new TheMovieDbQueryTask().execute(theMovieDbSearchUrl);
     }
 
