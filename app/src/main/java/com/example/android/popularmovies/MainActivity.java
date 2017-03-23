@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -26,8 +25,6 @@ import java.util.ArrayList;
 
 import utilities.NetworkUtils;
 import utilities.OpenMovieJsonUtils;
-
-import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
 
@@ -128,14 +125,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         Context context = MainActivity.this;
-        if (menuItemThatWasSelected == R.id.action_setting) {
-            String message = "Setting clicked";
-            makeText(context, message, Toast.LENGTH_SHORT).show();
-        }
-        if (menuItemThatWasSelected == R.id.play_list){
-            String message = "Play List";
-            makeText(context, message, Toast.LENGTH_SHORT).show();
-        }
+        // TODO: fetch different movies from internet
         return super.onOptionsItemSelected(item);
     }
 
